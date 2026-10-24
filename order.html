@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Заказ — AI MTI</title>
+<link rel="stylesheet" href="style/styles.css">
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">AI<span> MTI</span></a>
+  <nav>
+    <a href="index.html">Главная</a>
+    <a href="services.html">Услуги</a>
+    <a href="cooperation.html">Сотрудничество</a>
+    <a href="delivery.html">Поставки</a>
+    <a href="account.html">Аккаунт</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <h1>Заказ оформлен</h1>
+  <p>Информация о вашем заказе сохранена. Менеджер свяжется с вами в ближайшее время.</p>
+</div>
+
+<section class="order-section">
+  <div class="order-card">
+
+    <div class="order-status-badge">
+      <span class="status-dot"></span>
+      <span>Оформление</span>
+    </div>
+
+    <h2 class="order-title">Детали заказа <span id="orderNumberSpan"></span></h2>
+
+    <div class="order-details" id="orderDetails">
+      <div class="order-loading">⏳ Загрузка данных...</div>
+    </div>
+
+    <div class="order-actions" style="display: none;" id="orderActions">
+      <a href="delivery.html" class="btn">Новый заказ</a>
+      <a href="index.html" class="btn btn-secondary">На главную</a>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  © 2025 AI MTI (Michael’s Technological Industry) — Развитие своих ИИ технологий. Все права защищены.
+</footer>
+
+<script>
+const FIREBASE_URL = 'https://YOUR-PROJECT-default-rtdb.firebaseio.com';
+
+function cloudEnabled() {
+  return FIREBASE_URL && !FIREBASE_URL.includes('YOUR-PROJECT');
+}
+
+function cloudUrl(path) {
+  return FIREBASE_URL.replace(/\/$/, '') + '/' + path + '.json';
+}
+
+(async function () {
+  const params = new URLSearchParams(window.location.search);
+  const orderNumber = params.get('order');
+  const details = document.getElementById('orderDetails');
+  const actions = document.getElementById('orderActions');
+
+  if (!orderNumber) {
+    details.innerHTML =
+      '<div class="order-empty">' +
+        '<span class="order-empty-icon">📭</span>' +
+        '<p>У вас пока нет оформленных заказов.</p>' +
+        '<a href="delivery.html" class="btn" style="margin-top:15px;">Оформить заказ</a>' +
+      '</div>';
+    return;
+  }
+
+  let data = null;
+
+  if (cloudEnabled()) {
+    try {
+      const res = await fetch(cloudUrl('orders/' + orderNumber));
+      if (res.ok) {
+        const cloudData = await res.json();
+        if (cloudData) data = cloudData;
+      }
+    } catch (e) {
+      console.warn('Cloud fetch failed:', e);
+    }
+  }
+
+  if (!data) {
+    const local = localStorage.getItem('aimti_order_' + orderNumber);
+    if (local) {
+      try { data = JSON.parse(local); } catch (e) {}
+    }
+  }
+
+  if (!data) {
+    details.innerHTML =
+      '<div class="order-empty">' +
+        '<span class="order-empty-icon">❌</span>' +
+        '<p>Заказ <strong>' + orderNumber + '</strong> не найден.</p>' +
+        '<a href="delivery.html" class="btn" style="margin-top:15px;">Оформить новый</a>' +
+      '</div>';
+    return;
+  }
+
+  const warehouse = 'Москва, Водопроводная, 4, к42';
+  const deliveryPoint = (data.city || '') + (data.city && data.address ? ', ' : '') + (data.address || '');
+  const totalFormatted = Number(data.total).toLocaleString('ru-RU') + ' ₽';
+
+  document.getElementById('orderNumberSpan').textContent = '№ ' + orderNumber;
+
+  details.innerHTML =
+    '<div class="order-item">' +
+      '<div class="order-icon">🛠️</div>' +
+      '<div class="order-content">' +
+        '<span class="order-label">Услуга</span>' +
+        '<span class="order-value">' + (data.service || '—') + '</span>' +
+      '</div>' +
+    '</div>' +
+    '<div class="order-item">' +
+      '<div class="order-icon">⏳</div>' +
+      '<div class="order-content">' +
+        '<span class="order-label">Состояние заказа</span>' +
+        '<span class="order-value"><span class="status-badge-inline">' + (data.status || 'Оформление') + '</span></span>' +
+      '</div>' +
+    '</div>' +
+    '<div class="order-item">' +
+      '<div class="order-icon">🚚</div>' +
+      '<div class="order-content">' +
+        '<span class="order-label">Путь</span>' +
+        '<span class="order-value">' + warehouse + ' → ' + (deliveryPoint || 'Не указана') + ' (' + data.distance + ' км)</span>' +
+      '</div>' +
+    '</div>' +
+    '<div class="order-item">' +
+      '<div class="order-icon">💰</div>' +
+      '<div class="order-content">' +
+        '<span class="order-label">Стоимость</span>' +
+        '<span class="order-value order-price">' + totalFormatted + '</span>' +
+      '</div>' +
+    '</div>';
+
+  actions.style.display = 'flex';
+})();
+</script>
+
+</body>
+</html>

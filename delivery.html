@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Поставки и стоимость — AI MTI</title>
+<link rel="stylesheet" href="style/styles.css">
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">AI<span> MTI</span></a>
+  <nav>
+    <a href="index.html">Главная</a>
+    <a href="services.html">Услуги</a>
+    <a href="cooperation.html">Сотрудничество</a>
+    <a href="delivery.html" class="active">Поставки</a>
+    <a href="account.html">Аккаунт</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <h1>Поставки и стоимость</h1>
+  <p>Стоимость поставок от 100 000 ₽ до 600 000 ₽. Доставка — 120 ₽ за 1 км от склада в Москве.</p>
+  <a href="#order" class="btn">Оформить заказ</a>
+</div>
+
+<section id="search-order" style="padding-bottom: 0;">
+  <h2>Поиск заказа</h2>
+  <p class="lead">Введите номер заказа, чтобы проверить его статус.</p>
+  <div class="form-container search-container" style="margin-top: 30px;">
+    <div class="form-group" style="margin-bottom: 15px;">
+      <label for="searchOrderNumber">Номер заказа</label>
+      <input type="text" id="searchOrderNumber" placeholder="Например, NT-123456" style="text-transform: uppercase;">
+    </div>
+    <button type="button" id="searchBtn" class="btn btn-full" onclick="searchOrder()">Найти заказ</button>
+    <p id="searchError" class="search-error" style="display: none;"></p>
+  </div>
+</section>
+
+<section id="info">
+  <h2>Стоимость поставок</h2>
+  <p class="lead">Гибкая система ценообразования для любого масштаба строительства.</p>
+  <div class="grid">
+    <div class="info-card">
+      <span class="big">100 000 — 600 000 ₽</span>
+      <span class="label">Диапазон стоимости поставок</span>
+    </div>
+    <div class="info-card">
+      <span class="big">120 ₽ / 1 км</span>
+      <span class="label">Стоимость доставки от склада в Москве</span>
+    </div>
+    <div class="info-card">
+      <span class="big">Москва</span>
+      <span class="label">Точка отправления — склад в Москве</span>
+    </div>
+  </div>
+</section>
+
+<section id="order">
+  <h2>Оформление заказа</h2>
+  <p class="lead">Выберите услугу, укажите город доставки — расстояние рассчитается автоматически.</p>
+
+  <div class="form-container" style="margin-top:40px;">
+    <form onsubmit="handleOrder(event)">
+
+      <div class="form-group">
+        <label for="service">Услуга <span class="req">*</span></label>
+        <select id="service" required onchange="updateTotal()">
+          <option value="">— Выберите услугу —</option>
+          <option value="100000">Спец-доступ к ИИ (Базовый) — 100 000 ₽</option>
+          <option value="250000">Спец-доступ к ИИ (Расширенный) — 250 000 ₽</option>
+          <option value="350000">Установка ИИ под ключ (Базовая) — 350 000 ₽</option>
+          <option value="600000">Установка ИИ под ключ (Полная) — 600 000 ₽</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="city">Город / точка доставки <span class="req">*</span></label>
+        <input type="text" id="city" list="cityList" placeholder="Начните вводить город" required oninput="updateDistance()">
+        <datalist id="cityList"></datalist>
+      </div>
+
+      <div class="form-group">
+        <label for="distance">Расстояние от склада (км)</label>
+        <input type="text" id="distance" readonly placeholder="Заполнится автоматически">
+        <div class="warehouse-hint">
+          Точка отправления: <strong>склад в Москве — Водопроводная, 4, к42</strong>. Расстояние считается от склада.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="address">Точный адрес доставки (улица, дом) <span class="req">*</span></label>
+        <input type="text" id="address" placeholder="Улица, дом, квартира/офис" required>
+      </div>
+
+      <div class="form-group">
+        <label for="comment">Комментарий</label>
+        <textarea id="comment" rows="3" placeholder="Дополнительные пожелания к заказу"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Номер телефона <span class="req">*</span></label>
+        <input type="tel" id="phone" placeholder="+7 (___) ___-__-__" required>
+      </div>
+
+      <div class="form-group">
+        <label for="name">ФИО <span class="req">*</span></label>
+        <input type="text" id="name" placeholder="Иванов Иван Иванович" required>
+      </div>
+
+      <div class="total-box">
+        <div class="total-row">
+          <span>Стоимость услуги:</span>
+          <span id="servicePrice">0 ₽</span>
+        </div>
+        <div class="total-row">
+          <span>Доставка (120 ₽ × км):</span>
+          <span id="deliveryPrice">0 ₽</span>
+        </div>
+        <div class="total-row total-final">
+          <span>Итого:</span>
+          <span id="totalPrice">0 ₽</span>
+        </div>
+      </div>
+
+      <button type="submit" class="btn">Оформить заказ</button>
+    </form>
+  </div>
+</section>
+
+<section class="company-info">
+  <h2>Контактная информация</h2>
+  <div class="info-grid">
+    <div class="info-item">
+      <span class="info-label">Мобильный</span>
+      <a href="tel:+79999999999" class="info-value">+7 999 999 99 99</a>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Мобильный резерв</span>
+      <a href="tel:+78888888888" class="info-value">+7 888 888 88 88</a>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Юр. адрес компании</span>
+      <span class="info-value">Москва, ул. Автомобильный проезд, 4, к42, кабинет 4009, 20 этаж</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Руководитель</span>
+      <span class="info-value">ИП Москвин Оович Хатиков</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2025 AI MTI (Michael’s Technological Industry) — Развитие своих ИИ технологий. Все права защищены.
+</footer>
+
+<script>
+const FIREBASE_URL = 'https://YOUR-PROJECT-default-rtdb.firebaseio.com';
+
+function cloudEnabled() {
+  return FIREBASE_URL && !FIREBASE_URL.includes('YOUR-PROJECT');
+}
+
+function cloudUrl(path) {
+  return FIREBASE_URL.replace(/\/$/, '') + '/' + path + '.json';
+}
+
+async function searchOrder() {
+  const input = document.getElementById('searchOrderNumber');
+  const errorEl = document.getElementById('searchError');
+  const btn = document.getElementById('searchBtn');
+  const orderNumber = input.value.trim().toUpperCase();
+
+  errorEl.style.display = 'none';
+
+  if (!orderNumber) {
+    errorEl.textContent = 'Пожалуйста, введите номер заказа.';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Ищем заказ...';
+
+  let found = null;
+
+  if (cloudEnabled()) {
+    try {
+      const res = await fetch(cloudUrl('orders/' + orderNumber));
+      if (res.ok) {
+        const data = await res.json();
+        if (data) found = data;
+      }
+    } catch (e) {
+      console.warn('Cloud search failed:', e);
+    }
+  }
+
+  if (!found) {
+    const local = localStorage.getItem('aimti_order_' + orderNumber);
+    if (local) {
+      try { found = JSON.parse(local); } catch (e) {}
+    }
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Найти заказ';
+
+  if (found) {
+    window.location.href = 'order.html?order=' + encodeURIComponent(orderNumber);
+  } else {
+    errorEl.textContent = 'Заказ с таким номером не найден. Проверьте номер.';
+    errorEl.style.display = 'block';
+  }
+}
+
+const cityDistances = {
+  'Москва': 0, 'Химки': 20, 'Балашиха': 25, 'Подольск': 40, 'Люберцы': 20,
+  'Мытищи': 22, 'Красногорск': 25, 'Одинцово': 25, 'Домодедово': 45,
+  'Щёлково': 40, 'Королёв': 25, 'Реутов': 20, 'Долгопрудный': 20,
+  'Видное': 25, 'Дмитров': 65, 'Сергиев Посад': 75, 'Ногинск': 55,
+  'Орехово-Зуево': 80, 'Серпухов': 100, 'Наро-Фоминск': 70, 'Можайск': 110,
+  'Волоколамск': 130, 'Клин': 85, 'Солнечногорск': 65, 'Истра': 60,
+  'Зеленоград': 40, 'Троицк': 40, 'Апрелевка': 40,
+  'Санкт-Петербург': 700, 'СПб': 700, 'Нижний Новгород': 400, 'Казань': 800,
+  'Екатеринбург': 1800, 'Новосибирск': 3300, 'Самара': 1000, 'Омск': 2700,
+  'Челябинск': 1800, 'Ростов-на-Дону': 1100, 'Уфа': 1300, 'Красноярск': 4000,
+  'Воронеж': 500, 'Пермь': 1400, 'Волгоград': 1000, 'Краснодар': 1350,
+  'Саратов': 850, 'Тюмень': 2100, 'Тольятти': 1000, 'Ижевск': 1200,
+  'Барнаул': 3600, 'Ульяновск': 900, 'Иркутск': 5200, 'Хабаровск': 8300,
+  'Владивосток': 9000, 'Ярославль': 270, 'Владимир': 190, 'Тула': 180,
+  'Калуга': 180, 'Рязань': 200, 'Тверь': 180, 'Иваново': 300, 'Брянск': 380,
+  'Белгород': 700, 'Курск': 530, 'Орёл': 360, 'Липецк': 450, 'Тамбов': 480,
+  'Пенза': 640, 'Смоленск': 400, 'Великий Новгород': 560, 'Псков': 740,
+  'Вологда': 480, 'Архангельск': 1300, 'Мурманск': 2000, 'Сочи': 1600,
+  'Анапа': 1550, 'Новороссийск': 1500, 'Ставрополь': 1400, 'Астрахань': 1300,
+  'Калининград': 1400, 'Симферополь': 1500, 'Севастополь': 1600,
+  'Кострома': 340, 'Киров': 950, 'Курган': 2000, 'Оренбург': 1500,
+  'Чебоксары': 650, 'Саранск': 650, 'Йошкар-Ола': 750, 'Майкоп': 1400,
+  'Элиста': 1250, 'Махачкала': 1900, 'Грозный': 1800, 'Нальчик': 1600,
+  'Владикавказ': 1800, 'Черкесск': 1550, 'Петрозаводск': 1000, 'Сыктывкар': 1300
+};
+
+const cityLookup = {};
+Object.entries(cityDistances).forEach(([city, dist]) => {
+  cityLookup[city.toLowerCase()] = dist;
+});
+
+const cityList = document.getElementById('cityList');
+Object.keys(cityDistances).sort().forEach(city => {
+  const option = document.createElement('option');
+  option.value = city;
+  cityList.appendChild(option);
+});
+
+let currentDistance = 0;
+let distanceKnown = false;
+
+function updateDistance() {
+  const input = document.getElementById('city');
+  const distanceField = document.getElementById('distance');
+  const city = input.value.trim().toLowerCase();
+
+  if (city === '') {
+    currentDistance = 0;
+    distanceKnown = false;
+    distanceField.value = '';
+    distanceField.classList.remove('found', 'not-found');
+  } else if (cityLookup.hasOwnProperty(city)) {
+    currentDistance = cityLookup[city];
+    distanceKnown = true;
+    distanceField.value = currentDistance + ' км';
+    distanceField.classList.add('found');
+    distanceField.classList.remove('not-found');
+  } else {
+    currentDistance = 0;
+    distanceKnown = false;
+    distanceField.value = 'Уточняется';
+    distanceField.classList.remove('found');
+    distanceField.classList.add('not-found');
+  }
+  updateTotal();
+}
+
+function updateTotal() {
+  const service = document.getElementById('service');
+  const servicePrice = parseFloat(service.value) || 0;
+  const deliveryPrice = currentDistance * 120;
+  const total = servicePrice + deliveryPrice;
+
+  document.getElementById('servicePrice').textContent = servicePrice.toLocaleString('ru-RU') + ' ₽';
+  document.getElementById('deliveryPrice').textContent = deliveryPrice.toLocaleString('ru-RU') + ' ₽';
+  document.getElementById('totalPrice').textContent = total.toLocaleString('ru-RU') + ' ₽';
+}
+
+async function handleOrder(event) {
+  event.preventDefault();
+
+  const serviceSelect = document.getElementById('service');
+  const serviceText = serviceSelect.options[serviceSelect.selectedIndex].text;
+  const city = document.getElementById('city').value.trim();
+  const address = document.getElementById('address').value.trim();
+  const servicePrice = parseFloat(serviceSelect.value) || 0;
+  const deliveryPrice = currentDistance * 120;
+  const total = servicePrice + deliveryPrice;
+
+  const orderNumber = 'NT-' + Math.floor(100000 + Math.random() * 900000);
+
+  const orderData = {
+    orderNumber: orderNumber,
+    service: serviceText,
+    city: city,
+    address: address,
+    distance: currentDistance,
+    total: total,
+    status: 'Оформление',
+    createdAt: new Date().toISOString()
+  };
+
+  try {
+    localStorage.setItem('aimti_order_' + orderNumber, JSON.stringify(orderData));
+  } catch (e) {
+    console.warn('localStorage failed:', e);
+  }
+
+  let cloudOk = true;
+  if (cloudEnabled()) {
+    try {
+      const res = await fetch(cloudUrl('orders/' + orderNumber), {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData)
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+    } catch (e) {
+      cloudOk = false;
+      console.warn('Cloud save failed:', e);
+    }
+  }
+
+  if (cloudEnabled() && !cloudOk) {
+    alert('Заказ сохранён локально (в этом браузере), но не в облаке. Проверьте интернет или настройки Firebase.\n\nНомер заказа: ' + orderNumber);
+  }
+
+  window.location.href = 'order.html?order=' + encodeURIComponent(orderNumber);
+}
+</script>
+
+</body>
+</html>

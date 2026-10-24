@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Аккаунт — AI MTI</title>
+<link rel="stylesheet" href="style/styles.css">
+</head>
+<body>
+
+<header>
+ <a href="index.html" class="logo">AI<span> MTI</span></a>
+  <nav>
+    <a href="index.html">Главная</a>
+    <a href="services.html">Услуги</a>
+    <a href="cooperation.html">Сотрудничество</a>
+    <a href="delivery.html">Поставки</a>
+    <a href="account.html" class="active">Аккаунт</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <h1>Личный кабинет</h1>
+  <p>Войдите в аккаунт или зарегистрируйтесь, чтобы получить доступ к системе AI MTI.</p>
+</div>
+
+<section class="account-section">
+  <div class="account-card">
+    <form id="loginForm" class="account-form active-form" onsubmit="handleLogin(event)">
+      <h2 class="form-title">Вход</h2>
+      <p class="form-subtitle">Введите логин и пароль, чтобы войти в систему.</p>
+
+      <div class="form-group">
+        <label for="loginUsername">Логин <span class="req">*</span></label>
+        <input type="text" id="loginUsername" placeholder="Ваш логин" required>
+      </div>
+
+      <div class="form-group">
+        <label for="loginPassword">Пароль <span class="req">*</span></label>
+        <input type="password" id="loginPassword" placeholder="Ваш пароль" required>
+      </div>
+
+      <div class="checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="loginAgree" required>
+          <span class="checkbox-custom"></span>
+          <span class="checkbox-text">
+            Я согласен на обработку персональных данных и согласен с
+            <a href="policy.html" class="policy-link">политикой компании</a>
+          </span>
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-full">Войти</button>
+
+      <p class="form-toggle">
+        Нет аккаунта? <a href="#" onclick="showRegister(event)">Зарегистрируйтесь</a>
+      </p>
+    </form>
+
+    <form id="registerForm" class="account-form" onsubmit="handleRegister(event)">
+      <h2 class="form-title">Регистрация</h2>
+      <p class="form-subtitle">Заполните все поля, чтобы создать аккаунт.</p>
+
+      <div class="form-group">
+        <label for="regEmail">Почта <span class="req">*</span></label>
+        <input type="email" id="regEmail" placeholder="example@mail.ru" required>
+      </div>
+
+      <div class="form-group">
+        <label for="regLogin">Логин <span class="req">*</span></label>
+        <input type="text" id="regLogin" placeholder="Желаемый логин" required>
+      </div>
+
+      <div class="form-group">
+        <label for="regPassword">Пароль <span class="req">*</span></label>
+        <input type="password" id="regPassword" placeholder="Придумайте пароль" required>
+      </div>
+
+      <div class="form-group">
+        <label for="regPassword2">Повторите пароль <span class="req">*</span></label>
+        <input type="password" id="regPassword2" placeholder="Повторите пароль" required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="regFirstName">Имя <span class="req">*</span></label>
+          <input type="text" id="regFirstName" placeholder="Иван" required>
+        </div>
+        <div class="form-group">
+          <label for="regLastName">Фамилия <span class="req">*</span></label>
+          <input type="text" id="regLastName" placeholder="Иванов" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="regMiddleName">Отчество <span class="req">*</span></label>
+        <input type="text" id="regMiddleName" placeholder="Иванович" required>
+      </div>
+
+      <div class="form-group">
+        <label for="regAddress">Адрес <span class="req">*</span></label>
+        <input type="text" id="regAddress" placeholder="Город, улица, дом" required>
+      </div>
+
+      <div class="form-group">
+        <label for="regCompany">Компания <span class="req">*</span></label>
+        <input type="text" id="regCompany" placeholder="Название компании" required>
+      </div>
+
+      <div class="form-group">
+        <label for="regPhone">Номер телефона <span class="req">*</span></label>
+        <input type="tel" id="regPhone" placeholder="+7 (___) ___-__-__" required>
+      </div>
+
+      <div class="checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="regAgree" required>
+          <span class="checkbox-custom"></span>
+          <span class="checkbox-text">
+            Я согласен на обработку персональных данных и согласен с
+            <a href="policy.html" class="policy-link">политикой компании</a>
+          </span>
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-full">Зарегистрироваться</button>
+
+      <p class="form-toggle">
+        Уже есть аккаунт? <a href="#" onclick="showLogin(event)">Войдите</a>
+      </p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  © 2025 AI MTI (Michael’s Technological Industry) — Развитие своих ИИ технологий. Все права защищены.
+</footer>
+
+<script>
+function showRegister(e) {
+  e.preventDefault();
+  document.getElementById('loginForm').classList.remove('active-form');
+  document.getElementById('registerForm').classList.add('active-form');
+}
+
+function showLogin(e) {
+  e.preventDefault();
+  document.getElementById('registerForm').classList.remove('active-form');
+  document.getElementById('loginForm').classList.add('active-form');
+}
+
+function handleLogin(e) {
+  e.preventDefault();
+  alert('Вход выполнен (тестовая страница). Перенаправление не выполняется.');
+}
+
+function handleRegister(e) {
+  e.preventDefault();
+  const p1 = document.getElementById('regPassword').value;
+  const p2 = document.getElementById('regPassword2').value;
+
+  if (p1 !== p2) {
+    alert('Пароли не совпадают. Пожалуйста, проверьте ввод.');
+    return;
+  }
+  alert('Регистрация успешна (тестовая страница). Перенаправление не выполняется.');
+}
+</script>
+
+</body>
+</html>

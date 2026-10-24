@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сотрудничество — AI MTI</title>
+<link rel="stylesheet" href="style/styles.css">
+</head>
+<body>
+
+<header>
+ <a href="index.html" class="logo">AI<span> MTI</span></a>
+  <nav>
+    <a href="index.html">Главная</a>
+    <a href="services.html">Услуги</a>
+    <a href="cooperation.html" class="active">Сотрудничество</a>
+    <a href="delivery.html">Поставки</a>
+    <a href="account.html">Аккаунт</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <h1>Сотрудничество</h1>
+  <p>Станьте партнёром AI MTI или оставьте обратную связь — мы всегда открыты к диалогу.</p>
+</div>
+
+<section id="partnership">
+  <h2>Стать партнёром</h2>
+  <p class="lead">
+    Мы ищем надёжных партнёров для совместного развития ИИ-технологий в строительстве.
+  </p>
+  <div class="grid">
+    <div class="card">
+      <span class="icon">🤝</span>
+      <h3>Партнёрам и дилерам</h3>
+      <p>Предлагаем выгодные условия для дилеров и региональных представителей AI MTI.</p>
+    </div>
+    <div class="card">
+      <span class="icon">🏗️</span>
+      <h3>Совместные проекты</h3>
+      <p>Реализуем совместные строительные проекты с интеграцией наших ИИ-решений.</p>
+    </div>
+    <div class="card">
+      <span class="icon">🔬</span>
+      <h3>Технологическое партнёрство</h3>
+      <p>Сотрудничаем с научными и инженерными командами над развитием собственных ИИ.</p>
+    </div>
+  </div>
+</section>
+
+<section id="feedback">
+  <h2>Обратная связь</h2>
+  <p class="lead">Оставьте сообщение — мы ответим в ближайшее время.</p>
+  <div class="form-container" style="margin-top:40px;">
+    <form onsubmit="handleFeedback(event)">
+      <div class="form-group">
+        <label for="fbName">ФИО <span class="req">*</span></label>
+        <input type="text" id="fbName" placeholder="Иванов Иван Иванович" required>
+      </div>
+      <div class="form-group">
+        <label for="fbContact">Телефон или Email <span class="req">*</span></label>
+        <input type="text" id="fbContact" placeholder="+7 (___) ___-__-__ или email@mail.ru" required>
+      </div>
+      <div class="form-group">
+        <label for="fbMessage">Сообщение <span class="req">*</span></label>
+        <textarea id="fbMessage" rows="4" placeholder="Ваш вопрос или предложение" required></textarea>
+      </div>
+      <button type="submit" class="btn">Отправить сообщение</button>
+    </form>
+  </div>
+</section>
+
+<section class="company-info">
+  <h2>Контактная информация</h2>
+  <div class="info-grid">
+    <div class="info-item">
+      <span class="info-label">Мобильный</span>
+      <a href="tel:+79999999999" class="info-value">+7 999 999 99 99</a>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Мобильный резерв</span>
+      <a href="tel:+78888888888" class="info-value">+7 888 888 88 88</a>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Юр. адрес компании</span>
+      <span class="info-value">Москва, ул. Автомобильный проезд, 4, к42, кабинет 4009, 20 этаж</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Руководитель</span>
+      <span class="info-value">ИП Москвин Оович Хатиков</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2025 AI MTI (Michael’s Technological Industry) — Развитие своих ИИ технологий. Все права защищены.
+</footer>
+
+<script>
+function handleFeedback(event) {
+  event.preventDefault();
+  const name = document.getElementById('fbName').value;
+  alert('Спасибо, ' + name + '! Ваше сообщение отправлено. Мы свяжемся с вами скоро.');
+  event.target.reset();
+}
+</script>
+
+</body>
+</html>
